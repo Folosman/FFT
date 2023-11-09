@@ -35,7 +35,9 @@ compexVector FFT(const compexVector &analysValue)
     for ( int i = 0; i < n; i++)
     {
         res[i] = Arecursion[i % (n / 2)] + W[i] * Brecursion[i % (n / 2)];
+        std::cout << res[i] << " ";
     }
+    std::cout << "\n\n\n";
     return res;
 }
 
@@ -56,6 +58,5 @@ int main()
     }
     std::cout << "\n\n";
     FFT(harmonic);
-    std::cout << harmonic[25];
     return 0;
 }
