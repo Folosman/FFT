@@ -6,6 +6,7 @@
 #include <complex>
 
 #define M_PI 3.14159265358979323846
+#define N 128
 
 typedef std::vector<std::complex<double>> compexVector ;
 
@@ -35,15 +36,17 @@ compexVector FFT(const compexVector &analysValue)
     for ( int i = 0; i < n; i++)
     {
         res[i] = Arecursion[i % (n / 2)] + W[i] * Brecursion[i % (n / 2)];
+
+        if (res.size() == 128)
+        {
         std::cout << res[i] << " ";
+        }
     }
-    std::cout << "\n\n\n";
     return res;
 }
 
 int main()
 {
-    int N = 128;
     int f0 = 100;
     double w = f0;
 
@@ -54,9 +57,12 @@ int main()
     for (int i = 0; i < N; i++)
     {
         tempVar = sin(w * i);
+        std::cout << tempVar << " ";
         harmonic.push_back(tempVar);
     }
+
     std::cout << "\n\n";
+
     FFT(harmonic);
     return 0;
 }
