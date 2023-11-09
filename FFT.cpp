@@ -7,6 +7,7 @@
 
 #define M_PI 3.14159265358979323846
 #define N 128
+#define F0 100
 
 typedef std::vector<std::complex<double>> compexVector ;
 
@@ -47,11 +48,9 @@ compexVector FFT(const compexVector &analysValue)
 
 int main()
 {
-    int f0 = 100;
-    double w = f0;
+    int w = F0;
 
     compexVector harmonic;
-    compexVector output;
     double tempVar;
 
     for (int i = 0; i < N; i++)
