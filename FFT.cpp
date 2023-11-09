@@ -12,7 +12,6 @@ typedef std::vector<std::complex<double>> compexVector ;
 compexVector FFT(const compexVector &analysValue)
 {
     int n = analysValue.size();
-    std::cout << "TESTrecurs";
     if (n == 1) return compexVector(1, analysValue[0]);
 
     compexVector W(n);
@@ -20,9 +19,8 @@ compexVector FFT(const compexVector &analysValue)
 
     for (int i = 0; i < n; i ++)
     {
-        alpha = 2 * M_PI * i / n;
-        W[i] = std::complex<double>(cos(alpha), sin(alpha));
-        std::cout << "TESTcomplex";
+            alpha = 2 * M_PI * i / n;
+            W[i] = std::complex<double>(cos(alpha), sin(alpha));
     }
 
     compexVector A(n / 2), B(n / 2);
@@ -37,32 +35,27 @@ compexVector FFT(const compexVector &analysValue)
     for ( int i = 0; i < n; i++)
     {
         res[i] = Arecursion[i % (n / 2)] + W[i] * Brecursion[i % (n / 2)];
-        std::cout << res[i];
     }
     return res;
 }
 
 int main()
 {
-    std::cout << "TESTmain";
     int N = 128;
     int f0 = 100;
-    double w = 2 * M_PI * f0;
+    double w = f0;
 
     compexVector harmonic;
+    compexVector output;
+    double tempVar;
 
     for (int i = 0; i < N; i++)
     {
-        harmonic[i] = sin(w * i);
-        std::cout << "TESTharm";
+        tempVar = sin(w * i);
+        harmonic.push_back(tempVar);
     }
-
+    std::cout << "\n\n";
     FFT(harmonic);
-
-    for (int i = 0; i < N; i++)
-    {
-        std::cout <<" " << harmonic[i] << " ";
-    }
-
+    std::cout << harmonic[25];
     return 0;
 }
