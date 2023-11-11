@@ -7,14 +7,14 @@
 
 #define M_PI 3.14159265358979323846
 #define N 128
-#define F0 100
+#define F0 25
 
 typedef std::vector<std::complex<double>> compexVector ;
 
-compexVector FFT(const compexVector &analysValue)
+void FFT(compexVector &analysValue)
 {
     int n = analysValue.size();
-    if (n == 1) return compexVector(1, analysValue[0]);
+    if (n == 1) return;
 
     compexVector W(n);
     double alpha;
@@ -31,26 +31,20 @@ compexVector FFT(const compexVector &analysValue)
         A[i] = analysValue[i * 2];
         B[i] = analysValue[i * 2 + 1];
     }
-    compexVector Arecursion = FFT(A);
-    compexVector Brecursion = FFT(B);
-    compexVector res(n);
+    FFT(A);
+    FFT(B);
     for ( int i = 0; i < n; i++)
     {
-        res[i] = Arecursion[i % (n / 2)] + W[i] * Brecursion[i % (n / 2)];
-
-        if (res.size() == 128)
-        {
-        std::cout << res[i] << " ";
-        }
+        analysValue[i] = A[i % (n / 2)] + W[i] * B[i % (n / 2)];
     }
-    return res;
 }
 
 int main()
 {
-    int w = F0;
+    double w = F0;
 
     compexVector harmonic;
+    compexVector output;
     double tempVar;
 
     for (int i = 0; i < N; i++)
@@ -63,5 +57,9 @@ int main()
     std::cout << "\n\n";
 
     FFT(harmonic);
+    for (int i = 0; i < N; i++)
+    {
+        std::cout <<" " << harmonic[i] << "; ";
+    }
     return 0;
 }
