@@ -4,7 +4,6 @@
 #include <QChartView>
 #include <QLineSeries>
 
-#include <complex.h>
 #include <cstdlib>
 #include <iostream>
 #include <math.h>
@@ -13,7 +12,7 @@
 
 #define M_PI 3.14159265358979323846
 #define N 128
-#define F0 1
+#define F0 64
 
 typedef std::vector<std::complex<double>> compexVector ;
 
@@ -46,17 +45,6 @@ void FFT(compexVector &analysValue)
 }
 
 
-//void createChart(QLineSeries &series,compexVector &value)
-//{
-
-//    for (int i = 0; i < value.size(); i++)
-//    {
-//        series.append(std::sqrt(value[i].real() * value[i].real() + value[i].imag() * value[i].imag()),
-//                       std::atan2(value[i].imag(), value[i].real()));
-//    }
-
-//}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -64,18 +52,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     compexVector harmonic;
     double tempVar;
-
     for (int i = 0; i < N; i++)
     {
-        tempVar = sin(F0 * i);
-//        std::cout << tempVar << " ";
-        harmonic.push_back(tempVar);
-    }
 
+        tempVar = sin(2.7*F0 * i);
+        harmonic.push_back(tempVar);
+
+    }
 //    std::cout << "\n\n";
 
     FFT(harmonic);
-//    createChart(&series, harmonic);
 
     FFTChart = new QChart;
 
@@ -83,33 +69,25 @@ MainWindow::MainWindow(QWidget *parent)
     FFTChart->setTitle("FFT Chart");
 
     QValueAxis *axisX = new QValueAxis;
-    axisX->setRange(-10, 10);
+    axisX->setRange(-10, 128);
     axisX->setTickCount(1);
-    axisX->setLabelFormat("hui");
 
     QValueAxis *axisY = new QValueAxis;
     axisY->setRange(0, 60);
-    axisY->setTickCount(1);
-    axisY->setLabelFormat("Hui");
+    axisY->setTickCount(2);
 
-    QLineSeries *series = new QLineSeries();
+    QLineSeries *series = new QLineSeries();//std::atan2(harmonic[i].imag(), harmonic[i].real())
 
-    for(int i = 0; i < harmonic.size(); i++)
+    for(int i = 0; i < harmonic.size(); i++)//std::sqrt(harmonic[i].real() * harmonic[i].real() + harmonic[i].imag() * harmonic[i].imag())
     {
-        series->append(std::atan2(harmonic[i].imag(), harmonic[i].real()),
+        series->append(i,
                        std::sqrt(harmonic[i].real() * harmonic[i].real() + harmonic[i].imag() * harmonic[i].imag()));
     }
 
     FFTChart->addSeries(series);
     FFTChart->setAxisX(axisX, series);
     FFTChart->setAxisY(axisY, series);
-
-//    for (int i = 0; i < N; i++)
-//    {
-//        std::cout <<" " << harmonic[i] << " ";
-//    }
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
